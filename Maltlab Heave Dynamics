@@ -1,0 +1,37 @@
+% HEAVE PLATE NET FORCE ANALYSIS
+% Computes net vertical force on an underwater heave plate (no tension)
+
+%% CONSTANTS
+g = 9.81;                          % Gravitational acceleration (m/s^2)
+rho_water = 1025;                 % Density of water (kg/m^3) - 1025 for seawater
+
+%% PLATE PROPERTIES (edit these)
+m_plate = 10;                     % Mass of heave plate (kg) — typical: 5 to 50 kg
+V = 0.00098;                         % Submerged/displaced volume (m^3)
+A = 0.41;                          % Projected area (m^2) — vertical flow area
+Cd = 1.2;                         % Drag coefficient — flat plate: 1.0–2.0
+Ca = 1.5;                         % Added mass coefficient — typical: 0.5–1.5
+
+%% MOTION INPUTS (edit these)
+v = 0.2;                          % Vertical velocity (m/s), upward is positive
+a = 0.06666666/2;                          % Vertical acceleration (m/s^2), upward is positive
+
+%% FORCE COMPONENTS
+Fb = rho_water * V * g;                          % Buoyant force (upward)
+W = m_plate * g;                                 % Weight of the plate (downward)
+Fd = 0.5 * Cd * rho_water * A * v^2;             % Drag force (opposes motion)
+Fa = Ca * rho_water * V * a;                     % Added mass force (opposes acceleration)
+Inertia = m_plate * a;                           % Plate's own inertial response
+
+%% NET EXTERNAL FORCE ON PLATE
+% Net Force = Fb - W - Fd - Fa
+F_net = Fb - W - Fd - Fa;
+
+%% OUTPUT
+fprintf('--- Heave Plate Net Force Analysis (No Cable) ---\n');
+fprintf('Buoyancy Force (Fb):       %.2f N\n', Fb);
+fprintf('Weight (W):                %.2f N\n', W);
+fprintf('Drag Force (Fd):           %.2f N\n', Fd);
+fprintf('Added Mass Force (Fa):     %.2f N\n', Fa);
+fprintf('Net External Force (Fnet): %.2f N\n', F_net);
+fprintf('Plate Inertial Force:      %.2f N\n', Inertia);
